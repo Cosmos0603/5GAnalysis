@@ -7,3 +7,5 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+This is an introduction to a survey on public perception on the 5G network and its relationship to the Chinese party.
+
