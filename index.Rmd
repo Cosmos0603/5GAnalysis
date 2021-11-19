@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Analysis on 5G Public Perception"
+author: "Zeyu Jin, Yunhan Jin"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
