@@ -1,5 +1,5 @@
 --- 
-title: "Analysis on 5G Public Perception"
+title: "Analysis on Country Data related to COVID-19"
 author: "Zeyu Jin, Yunhan Jin"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -7,5 +7,5 @@ site: bookdown::bookdown_site
 
 # Introduction
 
-This is an introduction to a survey on public perception on the 5G network and its relationship to the Chinese party.
+Our study investigates COVID data for USA and other regions.
 
