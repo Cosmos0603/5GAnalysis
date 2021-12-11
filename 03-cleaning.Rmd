@@ -1,4 +1,22 @@
 # Data transformation
 
+```{r, message=FALSE, warning=FALSE}
+library(here)
+library(readr)
+library(tidyverse)
+```
+
 The transformation and pre-processing of our data is performed in python. Detailed code can be access here: [data transformation notebook](https://github.com/Cosmos0603/5GAnalysis/blob/main/EDA_Final_Proj.ipynb)
 
+## Epidemiology Table
+
+For the epidemiology data, the raw data is consist of both country level and US state level datapoints. So we divided it into two tables, one for global country level and the other for the US state level, and we keep only the most relevant columns. The preprocessing steps is as following:
+* Filter column `location_key`. If it is a key corresponding to a country, we add the row into our country-level table; it it is a US state key, we add the row into our state-level table.
+* Select columns: `date`, `location_key`, `new_confirmed`, `new_deceased`, `cumulative_confirmed`, `cumulative_deceased`
+
+After cleaning, the country-level table has `163609` rows and `6` columns while the state-level table has `38537` rows and `6` columns.
+
+```{r}
+epi_country <- readr::read_csv(here::here("./data/epi_country.csv"))
+epi_country
+```
