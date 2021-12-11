@@ -1,8 +1,12 @@
 introduction
 data-sources
-epidemiology
-url
-schema
+economic-indicators-by-countries
+covid-19-cases-records
+government-emergency-declarations
+health-indicators-by-regions
+movement-of-people
+population-vaccination-records
+index-reference-table
 data-transformation
 epidemiology-table
 missing-values
