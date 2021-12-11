@@ -118,7 +118,7 @@
 * Filter column <code>location_key</code>. If it is a key corresponding to a country, we add the row into our country-level table; it it is a US state key, we add the row into our state-level table.
 * Select columns: <code>date</code>, <code>location_key</code>, <code>new_confirmed</code>, <code>new_deceased</code>, <code>cumulative_confirmed</code>, <code>cumulative_deceased</code></p>
 <p>After cleaning, the country-level table has <code>163609</code> rows and <code>6</code> columns while the state-level table has <code>38537</code> rows and <code>6</code> columns.</p>
-<pre><code>## # A tibble: 163,609 x 6
+<pre><code>## # A tibble: 163,609 × 6
 ##    date       location_key new_confirmed new_deceased cumulative_confirmed
 ##    &lt;date&gt;     &lt;chr&gt;                &lt;dbl&gt;        &lt;dbl&gt;                &lt;dbl&gt;
 ##  1 2020-01-01 AD                       0            0                    0
@@ -131,7 +131,7 @@
 ##  8 2020-01-08 AD                       0            0                    0
 ##  9 2020-01-09 AD                       0            0                    0
 ## 10 2020-01-10 AD                       0            0                    0
-## # ... with 163,599 more rows, and 1 more variable: cumulative_deceased &lt;dbl&gt;</code></pre>
+## # … with 163,599 more rows, and 1 more variable: cumulative_deceased &lt;dbl&gt;</code></pre>
 
 </div>
 </div>
