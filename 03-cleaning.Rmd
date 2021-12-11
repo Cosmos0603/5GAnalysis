@@ -1,1 +1,4 @@
 # Data transformation
+
+The transformation and pre-processing of our data is performed in python. Detailed code can be access here: [data transformation notebook](https://github.com/Cosmos0603/5GAnalysis/blob/main/EDA_Final_Proj.ipynb)
+
