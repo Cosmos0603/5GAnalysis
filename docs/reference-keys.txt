@@ -9,6 +9,11 @@ population-vaccination-records
 index-reference-table
 data-transformation
 epidemiology-table
+economy-table
+first-mitigation-date-table
+health-table
+mobility-table
+vaccination-table
 missing-values
 results
 interactive-component
