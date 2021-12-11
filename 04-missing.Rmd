@@ -1,8 +1,45 @@
 # Missing values
-![Missing Values Plot](img/missing_plot.png)
 
-From the missing pattern visualization, we notice that there are a total of 7 missing patterns (including complete cases) from over 310 rows of data with 16 features. However, the majority (80%) of the missing patterns lacks data in the (age, gender, and highest level of education) categories. The rest of the missing patterns (except for the complete cases) has very minimal occurrences and could be discarded for now in the analysis. 
+```{r, message=FALSE, warning=FALSE}
+library(here)
+library(readr)
+library(tidyverse)
+library(naniar)
+```
 
-For this particular dataset (from a survey result), we have complete records in user opinion categories such as ‘5G awareness’, ‘5G Usage Experience’, ‘Chinese Collaboration’, various perspectives on 5G, as well as opinions on the influence placed by the Chinese government in the 5G industry. Having the above completed user opinion records, we can make correlation studies based on several intrinsic user features such as their countries, whether or not they are above 18 (inference for age), their operating system, and their cellular network. Overall, the dataset consists of adult users (>18) mainly from the U.S. or India, we have limited differences in terms of the variety of users. However, we do have many combinations regarding their opinions in the 5G network and the relationship to the Chinese party.
+```{r}
+epi_country <- readr::read_csv(here::here("./data/epi_country.csv"))
+```
 
-To complement the intrinsic user features (specific age, gender, and highest level of education), we would use additional data resources to inspect differences in opinions across age groups, gender, and education levels.
+As the epidemiology table is our main focus, we perform a missing value analysis on both the country-level and state-level of this table. 
+
+## Country-level Epidemiology Table
+Among the 163609 rows and 6 columns of the data, a total of 1290 values were missed in 5 columns which are `location_key`, `new_deceased`, `cumulative_deceased`, `new_confirmed`, `cumulative_confirmed`.
+```{r}
+knitr::kable(data.frame(column = names(epi_country), count = colSums(is.na(epi_country)),row.names = NULL) 
+              %>% arrange(desc(count)) %>% filter(count>0), 
+      caption = "Missing values of Country-level Epidemiology Table",align = "l",full_width = F,table.attr = "style='width:30%;'")
+```
+From the missing pattern visualization, we notice that there are a total of 7 missing patterns (excluding complete cases) from over 160000 rows of data with 6 features. The plot in the middle shows all the missing patterns. The plot on the top shows the corresponding frequencies of each patterns while the plot on the right shows the corresponding frequencies of each variables. The majority (~80%) of the missing patterns lacks data in the `location_key` column, which makes these data invalid as `location_key` is the main id of our data. Without `location_key`, we are not able to know where the data is being recorded, and thus the data will be useless in our analysis. The rest of the missing patterns has very minimal occurrences and could be discarded for now in the analysis. 
+
+```{r}
+gg_miss_upset(epi_country)
+```
+
+## State-level Epidemiology Table
+
+```{r}
+epi_state <- readr::read_csv(here::here("./data/epi_us_state.csv"))
+```
+
+Different from the country-level table, the state-level table is very clean. Among the 38537 rows and 6 columns of the data, a total of 9 values were missed in 2 columns which are `cumulative_deceased`, `cumulative_confirmed`. It is possible that the US government has put a great effort on keeping track of the epidemiology statistics. Moreover, as the missing values are all cumulative counts, we can infer these values from the counts of new cases.
+```{r}
+knitr::kable(data.frame(column = names(epi_state), count = colSums(is.na(epi_state)),row.names = NULL) 
+              %>% arrange(desc(count)) %>% filter(count>0), 
+      caption = "Missing values of State-level Epidemiology Table",align = "l",full_width = F,table.attr = "style='width:30%;'")
+```
+
+```{r}
+gg_miss_upset(epi_state)
+```
+

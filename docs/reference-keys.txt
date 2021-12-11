@@ -1,3 +1,5 @@
+tab:unnamed-chunk-21
+tab:unnamed-chunk-24
 introduction
 data-sources
 economic-indicators-by-countries
@@ -15,6 +17,8 @@ health-table
 mobility-table
 vaccination-table
 missing-values
+country-level-epidemiology-table
+state-level-epidemiology-table
 results
 interactive-component
 conclusion
