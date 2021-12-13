@@ -20,5 +20,9 @@ missing-values
 country-level-epidemiology-table
 state-level-epidemiology-table
 results
+global-data-analysis
+country-selection-based-on-economics-and-health-indicators
+comparison-of-cumulative-confirmed-and-deceased-covid-cases-for-representative-countries
+relationship-between-health-indicators-and-covid-mortality-rate
 interactive-component
 conclusion
