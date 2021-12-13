@@ -24,5 +24,9 @@ global-data-analysis
 country-selection-based-on-economics-and-health-indicators
 comparison-of-cumulative-confirmed-and-deceased-covid-cases-for-representative-countries
 relationship-between-health-indicators-and-covid-mortality-rate
+us-state-level-analysis
+differences-in-government-reacting-time-between-blue-states-and-red-states.
+differences-in-average-percentage-change-of-visits-to-retial-and-recreation-between-blue-states-and-red-states.
+difference-in-the-popularity-of-each-type-of-vaccines.
 interactive-component
 conclusion

@@ -1,8 +1,8 @@
 book_filename: "finalproj"
 output_dir: docs
 delete_merged_file: true
-edit: https://github.com/Cosmos0603/5GAnalysis/edit/main/%s
-view: https://github.com/Cosmos0603/5GAnalysis/blob/main/%s
+edit: https://github.com/Cosmos0603/Covid-19_Visualization/edit/main/%s
+view: https://github.com/Cosmos0603/Covid-19_Visualization/blob/main/%s
 language:
   ui:
     chapter_name: "Chapter "

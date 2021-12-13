@@ -8,6 +8,7 @@ library(readr)
 library(dplyr)
 library(ggrepel)
 library(agridat)
+library(grid)
 library(gridExtra)
 library(boot)
 library(tidyr)
@@ -132,8 +133,8 @@ vec_merge <- c("LS", "CF", "LU", "LI")
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-epi_econ_df <- epi_country_df[epi_country_df$location_key %in% vec_econ, c(1, 2, 5, 6)]
-epi_merge_df <- epi_country_df[epi_country_df$location_key %in% vec_merge, c(1, 2, 5, 6)]
+epi_econ_df <- epi_country_df[epi_country_df$location_key %in% vec_econ, c(1, 2, 6, 7)]
+epi_merge_df <- epi_country_df[epi_country_df$location_key %in% vec_merge, c(1, 2, 6, 7)]
 ```
 
 ```{r, message=FALSE, warning=FALSE}
@@ -257,7 +258,7 @@ quantile(epi_country_mortality_df$mortality_rate)
 Quantile values for life expectancy:
 ```{r, message=FALSE, warning=FALSE}
 # df with location and its life expectancy (not null)
-health_life_df <- health_df[(!is.na(health_df[,2])),c(1,2)]
+health_life_df <- health_df[(!is.na(health_df[,3])),c(1,3)]
 quantile(health_life_df$life_expectancy)
 ```
 
@@ -286,4 +287,114 @@ mosaic(life_rank ~ mortality_rank, direction = c("v", "h"), merge_mortality_life
 
 From the mosaic plot, we can see several interesting discoveries. Across the countries with non-null mortality rates and life expectancy, the group of countries with medium life expectancy consists of the majority portion of all groups in the mortality rate variable, suggesting their mortality rates have a wide range of variations. The countries in the group with high life expectancy has the least amoung of proportion in the group with high mortality rates. This makes sense intuitively as countries with high life expectancy typically is associated with good medical conditions as well as living conditions.
 
-By looking at two economic indicators (GDP and GDP per capita) and one health indicator (life expectancy) both across the entire dataset and also into specific representative countries, we were able to investigate the overall distributions in one or more variables of interests, time-series trends between selective individuals within groups, as well as relationships between groups for multiple variables. We notice that economic conditions have a less noticable association to COVID analysis compared to health indicators. In this project, we only touched upon life expectancy. However, if you would want to look more into different health indicators provided, you can choose your own by looking at our interactive component section, which we provided a visual scatterplot for different health indicators to assist future analysis.
+By looking at two economic indicators (GDP and GDP per capita) and one health indicator (life expectancy) both across the entire dataset and also into specific representative countries, we were able to investigate the overall distributions in one or more variables of interests, time-series trends between selective individuals within groups, as well as relationships between groups for multiple variables. We notice that economic conditions have a less noticable association to COVID analysis compared to health indicators. In this project, we only touched upon life expectancy. However, if you would want to look more into different health indicators provided, you can choose your own by looking at our interactive component section, which we provided a visual scatterplot for different health indicators to assist future analysis.[Link to the interactive scatterplots](https://vizhub.com/Cosmos0603/3324a912c58d4193a05045b96692db3d)
+
+## US State Level Analysis
+
+After the global analysis, we would like to focus more on the U.S. and perform state-level analysis on our data. We are interested in the differences in government reacting time and mobility change percentage between democratic states (blue states) and republican states (red states) as well as the popularity of each type of vaccines. 
+
+### Differences in government reacting time between blue states and red states.
+
+We use the number of days it takes for the state government to publish first mitigation policy after the first Covid case is confirmed in the state as a measurement of how fast the government reacts to the pandemic. We extract the date that the first mitigation policy is published (`First Mitigation Date`) and the date that the first Covid case is confirmed (`First Case Date`) for each state from our dataset and subtract them to get the variable that indicates the reacting time of the government of each state. We then draw pair barplot to exhibit the difference between the blue states and the red states.
+
+```{r}
+first_mitigate <- readr::read_csv(here::here("./data/first_mitigate_date.csv"))
+epi_state <- readr::read_csv(here::here("./data/epi_us_state.csv"))
+first_case = epi_state %>% filter(cumulative_confirmed>0) %>% group_by(location_key) %>% summarise(first_case=min(date))
+state_key_map <- readr::read_csv(here::here("./data/state_key_map.csv"))
+first_diff = first_mitigate %>% left_join(first_case, by="location_key") %>% left_join(state_key_map, by=c("location_key", "state_name")) %>% mutate(first_diff = first_mitigate_date-first_case)
+first_diff_blue = first_diff %>% filter(state_type=="blue") %>% arrange(first_diff) %>% top_n(10)
+first_diff_red = first_diff %>% filter(state_type=="red") %>% arrange(first_diff) %>% top_n(10)
+
+barplot_blue = ggplot(first_diff_blue, aes(x=reorder(state_name, first_diff), y=first_diff)) +
+    geom_bar(stat="identity", fill="dodgerblue3") +
+    geom_text(aes(label=first_diff), hjust=1.2, color="white", size=3.5) +
+    coord_flip() +
+    ggtitle("Top 10 Blue States") +
+    labs(y = "First Mitigation Date - First Case Date", x = "State",caption = " ") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 11,face = "bold", color = "grey35"),
+        plot.caption = element_text(color = "grey68"))
+
+barplot_red = ggplot(first_diff_red, aes(x=reorder(state_name, first_diff), y=first_diff)) +
+    geom_bar(stat="identity", fill="firebrick2") +
+    geom_text(aes(label=first_diff), hjust=1.2, color="white", size=3.5) +
+    coord_flip() +
+    ggtitle("Top 10 Red States") +
+    labs(y = "First Mitigation Date - First Case Date", x = "State",caption = " ") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 11,face = "bold", color = "grey35"),
+        plot.caption = element_text(color = "grey68"))
+
+grid.arrange(barplot_blue, barplot_red, ncol=2, nrow=1,
+     top = textGrob("How long after first confirm case that the state start the mitigation?",gp=gpar(fontsize=13, fontface = "bold")))
+
+```
+
+The above plot is consist of two parts, a horizontal bar chart for the ten blue states that reacts the slowest and another bar chart for the ten red states that reacts the slowest. The length of bars indicate how many days after the first case of Covid-19 is confirmed in the state that the government publish the first mitigation policy. By making a pair bar chart of blue states and red states side by side, it is clear that blue states react slower than red states in general. To dive deeper into the distribution of the reacting time of blue states and red states, a pair boxplot is presented down below. 
+
+```{r}
+first_diff_blue_red = first_diff %>% filter(state_type=="blue"|state_type=="red")
+ggplot(first_diff_blue_red, aes(x=first_diff, fill = state_type), alpha=0.8)+
+  geom_boxplot()+
+  stat_boxplot(geom ='errorbar') +
+  scale_fill_manual(name = "State type", values = c("dodgerblue3", "firebrick2"), 
+                    labels = c("Blue States","Red States")) +
+  ggtitle("How long it takes for the government to react?")+
+  labs(y = "State type", x = "Date of mitigation first published - Date of first confirmed case") +
+  theme_bw() +
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "bold", color = "grey35"),
+        plot.caption = element_text(color = "grey68"),
+        legend.position="bottom",
+        axis.text.y = element_blank())
+```
+
+The pair boxplot provides us a glance into the distribution of the reacting time of blue states and red states. The red boxplot corresponds to the red states and the blue boxplot to the blue states. This plot further confirms our findings that blue states react slower than the red states in general. 
+
+### Differences in average percentage change of visits to retial and recreation between blue states and red states. 
+
+```{r}
+mobility_state <- readr::read_csv(here::here("./data/mobility_us_state.csv"))
+avg_retail_mobility = mobility_state %>% left_join(state_key_map) %>% filter(state_type=="blue"|state_type=="red")%>% group_by(date, state_type) %>% summarise(avg_mobility_retail_recreation=mean(mobility_retail_and_recreation))
+ggplot(avg_retail_mobility, aes(x=date, y=avg_mobility_retail_recreation, color=state_type))+
+  geom_smooth(size=2, se=FALSE)+
+  scale_color_manual(name = "State type", values = c("dodgerblue3", "firebrick2"), 
+                    labels = c("Blue States","Red States"))+
+  scale_x_date(limits=as.Date(c("2020-01-01", "2021-12-11")),date_breaks="3 months", date_labels = "%Y-%m") +
+  labs(y="Avg percentage change of visits to retail and recreation (%)", x="Date", title="Line Plot of Average Percentage Change of Visits to \nRetail and Recreation in Blue States and Red States Respectively")+
+  theme_bw()+
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "bold", color = "grey35"),
+        plot.caption = element_text(color = "grey68"),
+        legend.position="bottom",
+        axis.text.x = element_text(size=8))
+```
+
+Even though the red states react faster than the blue states, it seems that the policies of the blue states are more effective than that of the red states. From the above line plot, it is clear that the average percentage change of visits to retail and recreation of blue states is lower than that of the red states at any time from Febrary 2020 to December 2021. In other words, the amount of visits decreased is larger in blue states than in red states, indicating that people in the blue states regulate their visits more than the people in the red states.
+
+### Difference in the popularity of each type of vaccines. 
+```{r}
+vaccinations_state <- readr::read_csv(here::here("./data/vaccinations_us_state.csv"))
+
+vaccinations_by_type = vaccinations_state %>% group_by(date) %>% summarise(sum_pfizer=sum(cumulative_persons_fully_vaccinated_pfizer), sum_moderna=sum(cumulative_persons_fully_vaccinated_moderna), sum_janssen=sum(cumulative_persons_fully_vaccinated_janssen)) %>% filter(!is.na(sum_pfizer))
+
+vac_type_quarter = vaccinations_by_type %>% filter(date %in% as.Date(c("2021-03-08", "2021-06-08", "2021-09-08", "2021-12-08")))
+
+vac_type_increase = vac_type_quarter %>% mutate(pfizer=sum_pfizer-lag(sum_pfizer, default=0), moderna=sum_moderna-lag(sum_moderna, default=0), janssen=sum_janssen-lag(sum_janssen, default=0)) %>% select(date, pfizer, moderna, janssen) %>% pivot_longer(!date, names_to="vac_type", values_to="increase")
+
+  
+ggplot(vac_type_increase, aes(as.character(date), increase)) +
+  geom_bar(aes(fill = vac_type), position = "dodge", stat = "identity")+
+  scale_fill_manual(name = "Vaccine Type", values = c("violet", "hotpink", "skyblue"), 
+                    labels = c("Janssen","Moderna","Pfizer"))+
+  labs(y="Counts of new fully vaccinated persons", x="Date", title="Comparisons of Usage of Each Type of vaccines")+
+  theme_bw()+
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "bold", color = "grey35"),
+        plot.caption = element_text(color = "grey68"),
+        legend.position="bottom")
+  
+```
+
+From the vaccination table, we generate a quarterly report of the usage of each type of vaccines. The ranking of the popularity of each type of vaccines is consistent across all quarters. Vaccines that are used the most are those produced by Pfizer, followed by those produced by Moderna, and those produced by Janssen are used the least. This finding indicates that vaccines produced by Pfizer are the most popular ones, probably for their effectiveness and reliability. 
