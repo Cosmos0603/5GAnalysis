@@ -83,7 +83,7 @@ The raw data give several health indicators such as `smoke prevalence` in differ
 
 Preprocessing steps:
 
-* Filter column `location_key`. If it is a key corresponding to a country, we add the row into our country-level table; it it is a US state key, we add the row into our state-level table.
+* Filter column `location_key`. If it is a key corresponding to a country, we add the row into our country-level table; if it is a US state key, we add the row into our state-level table.
 * As the state-level information only contains one health indicator, `life_expectancy`, and all other columns are all NAs. 
 
 Country-level table:
