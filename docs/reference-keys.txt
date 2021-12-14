@@ -29,4 +29,7 @@ differences-in-government-reacting-time-between-blue-states-and-red-states.
 differences-in-average-percentage-change-of-visits-to-retial-and-recreation-between-blue-states-and-red-states.
 difference-in-the-popularity-of-each-type-of-vaccines.
 interactive-component
+link-to-the-interactive-scatterplot
+description
+instructions-for-using-the-map
 conclusion
