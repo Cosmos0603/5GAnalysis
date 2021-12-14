@@ -291,7 +291,7 @@ By looking at two economic indicators (GDP and GDP per capita) and one health in
 
 ## US State Level Analysis
 
-After the global analysis, we would like to focus more on the U.S. and perform state-level analysis on our data. We are interested in the differences in government reacting time and mobility change percentage between democratic states (blue states) and republican states (red states) as well as the popularity of each type of vaccines. 
+After the global analysis, we would like to focus more on the U.S. and perform state-level analysis on our data. We are interested in the differences in government reacting time and mobility change percentage between democratic states (blue states) and republican states (red states) as well as the popularity of each type of vaccines. We categorized Democratic and Republican states based on [this link](https://www.gkgigs.com/list-of-blue-states-and-red-states/).
 
 ### Differences in government reacting time between blue states and red states.
 

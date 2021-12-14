@@ -173,11 +173,11 @@
 <p><img src="finalproj_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>From the above boxplot, we get the distribution of life expectancy acorss all countries in our dataset. Within the box, the interquartile range (IQR) suggests that the majority (middle 50%) of people live until their late 60s to their late 70s, with the entire range from early 50s till late 80s. This plot gives us a general idea of the distribution and porportion of life expectancy.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
-<pre><code>## # A tibble: 1 x 6
+<pre><code>## # A tibble: 1 × 6
 ##   location_key date       country_name cumulative_confirmed cumulative_deceased
 ##   &lt;chr&gt;        &lt;date&gt;     &lt;chr&gt;                       &lt;dbl&gt;               &lt;dbl&gt;
 ## 1 YE           2021-12-08 Yemen                       10047                1957
-## # ... with 1 more variable: mortality_rate &lt;dbl&gt;</code></pre>
+## # … with 1 more variable: mortality_rate &lt;dbl&gt;</code></pre>
 <p>As in the previous section, we noticed that the proportion of cumulative deceased to the cumulative confirmed (denoted as mortality rate) could give us an idea of the treatment for the country on COVID. Therefore, we use the boxplot on the mortality rate (in percentages) to further investigate the distribution. We noticed that the majority (almost 100%) of the countries have mortality rates below 5%, with several exceptions shown as outlier dots in the graph. Interestingly, there is one country whose mortality rate is close to 20%, which is huge given the distribution of all the other countries. The country is Yemen, shown above. By looking at the distribution, we were able to make some important discoveries.</p>
 <p>Quantile values for mortality rates:</p>
 <pre><code>##         0%        25%        50%        75%       100% 
@@ -193,7 +193,7 @@
 </div>
 <div id="us-state-level-analysis" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> US State Level Analysis</h2>
-<p>After the global analysis, we would like to focus more on the U.S. and perform state-level analysis on our data. We are interested in the differences in government reacting time and mobility change percentage between democratic states (blue states) and republican states (red states) as well as the popularity of each type of vaccines.</p>
+<p>After the global analysis, we would like to focus more on the U.S. and perform state-level analysis on our data. We are interested in the differences in government reacting time and mobility change percentage between democratic states (blue states) and republican states (red states) as well as the popularity of each type of vaccines. We categorized Democratic and Republican states based on <a href="https://www.gkgigs.com/list-of-blue-states-and-red-states/">this link</a>.</p>
 <div id="differences-in-government-reacting-time-between-blue-states-and-red-states." class="section level3" number="5.2.1">
 <h3><span class="header-section-number">5.2.1</span> Differences in government reacting time between blue states and red states.</h3>
 <p>We use the number of days it takes for the state government to publish first mitigation policy after the first Covid case is confirmed in the state as a measurement of how fast the government reacts to the pandemic. We extract the date that the first mitigation policy is published (<code>First Mitigation Date</code>) and the date that the first Covid case is confirmed (<code>First Case Date</code>) for each state from our dataset and subtract them to get the variable that indicates the reacting time of the government of each state. We then draw pair barplot to exhibit the difference between the blue states and the red states.</p>
